@@ -1,6 +1,6 @@
 #include<iostream>
 #include<cassert>
-#include"stack.hpp"
+#include"array_stack.hpp"
 
 int main(void){
 
