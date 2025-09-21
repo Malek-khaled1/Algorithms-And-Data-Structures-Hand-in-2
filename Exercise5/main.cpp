@@ -2,63 +2,55 @@
 #include "Set.hpp"
 
 int main() {
-    // Opret et Set med kapacitet 5
     Set<int> s;
 
-    // Edge 1: Fjern fra tomt Set
-    std::cout << "Test 1 (remove fra tomt): ";
-    s.remove(10); // bør ikke crashe
-    std::cout << (s.isEmpty() ? "OK" : "FEJL") << "\n";
+    std::cout << "=== Test 1: Empty set checks ===\n";
+    std::cout << "isEmpty(): " << (s.isEmpty() ? "true" : "false") << "\n"; // forventet: true
+    std::cout << "contains(5): " << (s.contains(5) ? "true" : "false") << "\n"; // forventet: false
+    s.remove(5); // fjern element der ikke findes (skal ikke crashe)
 
-    // Edge 2: Indeholder-tjek i tomt Set
-    std::cout << "Test 2 (contains i tomt): ";
-    std::cout << (s.contains(42) ? "FEJL" : "OK") << "\n";
+    std::cout << "\n=== Test 2: Insert one element ===\n";
+    s.insert(10);
+    std::cout << "isEmpty(): " << (s.isEmpty() ? "true" : "false") << "\n"; // forventet: false
+    std::cout << "contains(10): " << (s.contains(10) ? "true" : "false") << "\n"; // forventet: true
+    std::cout << "contains(11): " << (s.contains(11) ? "true" : "false") << "\n"; // forventet: false
 
-    // Normal insert
-    s.insert(1);
-    s.insert(2);
-    s.insert(3);
+    std::cout << "\n=== Test 3: Insert duplicates ===\n";
+    s.insert(10);  // duplikat
+    s.insert(10);  // duplikat igen
+    s.display();   // forventet: kun én 10 udskrives
 
-    // Edge 3: Indsæt samme element to gange
-    std::cout << "Test 3 (insert duplikat): ";
-    s.insert(2); // må ikke indsætte en ekstra 2
-    std::cout << (s.contains(2) ? "OK" : "FEJL") << "\n";
+    std::cout << "\n=== Test 4: Insert multiple elements ===\n";
+    s.insert(20);
+    s.insert(30);
+    s.insert(40);
+    s.display();   // forventet: 10, 20, 30, 40 (i rækkefølge)
 
-    // Edge 4: Fjern element der findes
-    std::cout << "Test 4 (remove eksisterende): ";
-    s.remove(2);
-    std::cout << (!s.contains(2) ? "OK" : "FEJL") << "\n";
+    std::cout << "\n=== Test 5: Remove element in middle ===\n";
+    s.remove(30);
+    s.display();   // forventet: 10, 20, 40
+    std::cout << "contains(30): " << (s.contains(30) ? "true" : "false") << "\n"; // forventet: false
 
-    // Edge 5: Fjern element der ikke findes
-    std::cout << "Test 5 (remove ikke-eksisterende): ";
-    s.remove(99); // bør ikke ændre noget
-    std::cout << (!s.contains(99) ? "OK" : "FEJL") << "\n";
+    std::cout << "\n=== Test 6: Remove element not in set ===\n";
+    s.remove(99);  // findes ikke
+    s.display();   // skal stadig være 10, 20, 40
 
-    // Edge 6: Insert indtil køen er fuld
-    std::cout << "Test 6 (insert indtil fuld): ";
-    try {
-        s.insert(10);
-        s.insert(11);
-        s.insert(12);
-        s.insert(13); // afhængig af Queue-kapacitet -> kan kaste assert
-        std::cout << "OK (hvis ingen crash)\n";
-    } catch (...) {
-        std::cout << "FEJL: kapacitetsproblem\n";
-    }
-
-    // Edge 7: Tjek isEmpty på ikke-tomt Set
-    std::cout << "Test 7 (isEmpty != true): ";
-    std::cout << (!s.isEmpty() ? "OK" : "FEJL") << "\n";
-
-    // Edge 8: Fjern alle elementer
-    std::cout << "Test 8 (tøm Set): ";
-    s.remove(1);
-    s.remove(3);
+    std::cout << "\n=== Test 7: Remove last element repeatedly ===\n";
+    s.remove(40);
+    s.remove(20);
     s.remove(10);
-    s.remove(11);
-    s.remove(12);
-    s.remove(13);
-    std::cout << (s.isEmpty() ? "OK" : "FEJL") << "\n";
+    s.display();   // forventet: tomt output
+    std::cout << "isEmpty(): " << (s.isEmpty() ? "true" : "false") << "\n"; // forventet: true
+
+    std::cout << "\n=== Test 8: insert from 0-4 in set ===\n";
+    for (int i = 0; i < 5; i++) {
+        s.insert(i);
+    }
+    s.display();  // forventet: 0,1,2,3,4
+    for (int i = 0; i < 5; i++) {
+        s.remove(i);
+    }
+    std::cout << "isEmpty(): " << (s.isEmpty() ? "true" : "false") << "\n"; // forventet: true
 
     return 0;
 }

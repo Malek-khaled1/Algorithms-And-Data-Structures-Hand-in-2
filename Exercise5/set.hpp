@@ -1,5 +1,5 @@
-#ifndef _SET_Hq_
-#define _SET_Hq_
+#ifndef _SET_HPP_
+#define _SET_HPP_
 #include "queue_class.h"
 
 template<typename Object>
@@ -18,7 +18,6 @@ public:
     // insert element in the set
     void insert(const Object& x){
         if(!contains(x)){
-
             q.put(x);
             ++theSize;
         }
@@ -46,7 +45,7 @@ public:
     bool contains(const Object& x){
         if(isEmpty()) {return false;} // return false if emqty
         
-        bool present = false; // qresent flag
+        bool present = false; // present flag
         Object temp; // temq to hold the dequeued element
         int n = theSize; // counter holds the size og the set
 
@@ -60,10 +59,20 @@ public:
         
         return present; // return the flag
     }
-    
 
+    void display()
+    {
+        if(theSize == 0){return;}
+        int n = theSize;
+        Object temp;
+        while (n > 0)
+        {
+            temp = q.get(); // dequeue
+            std::cout << temp << '\n'; // print element
+            q.put(temp); // enqueue again
+            --n;
+        }
+    }
 };
-
-
 
 #endif

@@ -241,9 +241,6 @@ bool List<Object>::find(const Object& x)
         temp = temp->next;
         
     }
-    
-    
-
     return false;     
 }
 
